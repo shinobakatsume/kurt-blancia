@@ -1,0 +1,2719 @@
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.*;
+import java.awt.event.*; 
+        import javax.swing.JOptionPane;
+
+
+/**
+ *
+ * @author Kurt Bernstein Blancia 
+ */
+public class GROUP5 {
+    // Array of products 
+    // these area is called global diri dali ra nmo matawag ang mga varables nmo 
+    // bisan pag nagklayo layo ang mga methods ani 
+        static int adcontr;
+      static String product[] = {null, "EMPTY","ICED GREEN TEA LATTE ","ICED LONDON TEA LATTE ","ICED PEACH GREEN TEA ",
+          "ICE PEACH LEMONADE ","ICED MATCHA  LATTE ","ICED PASSION TEA "," ICED GUAVA WHITE TEA ","ICED ORANGE TEA ",
+          " WATER "," Empty"," Empty"," Empty"," Empty","empty","empty"};
+      static String prodCODE[] = {"ICE","IT","IGTL", "ILTL","IPGT","IPL", "IML","IPT","IGWT","IOT","W","SLOT 11","SLOT 12","SLOT 13","SLOT 14","SLOT 15"};
+      // array of product prices
+      static int price[] = {75,0,375,100,50,60,70,80,90,100,100,0,0,0,0,0,0,0,0,0,0};
+     
+      // empty sets of qty and final qty arrays
+      static int qty[] =   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+      static int f_qty[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+      
+      // for re transacting costumers 
+      
+      static String costumer[] = {"COSTUMER 1", "COSTUMER 2" ,"COSTUMER 3" , "COSTUMER 4", "COSTUMER 5"};
+      static int CostTotal[] = {0,0,0,0,0,0,0,0,0,0};
+      // global variables 
+      static int choiceheresir = 0;
+      static String transaction ;   
+      static int LogChoice =0;
+      static String AdminName ;
+      static boolean adprd = true;
+      static int Costumer = 0;
+      static int final_total = 0;
+      static int logChoice = 0;
+      static String costNAME ;
+      static int payment = 0;
+      static int change = 0;
+      public static void f(){
+          boolean main = true;
+       boolean admin = true;
+       while(main == true){
+           
+            // FOR LOGGING IN SYSTEM 
+            LogChoice  = Integer.parseInt(JOptionPane.showInputDialog("WELCOME TO HayDien Milk Tea and Coffee shop \n[1]ADMINISTRATOR\n[2]CASHIER\n[3]LOG-OUT" ));
+      
+           if(LogChoice == 1){
+           while(admin == true){
+               
+          String user = JOptionPane.showInputDialog("INPUT USERNAME");
+          String pass = JOptionPane.showInputDialog("INPUT PASSWORD");
+          if(user.equalsIgnoreCase("admin") && pass.equalsIgnoreCase("admin")){
+               
+               AdminName = JOptionPane.showInputDialog("WELCOME ADMINISTRATOR \nPLEASE IDENTIFY YOUR SELF");
+               // calling the method that will be redirected
+               adControl();
+                 }
+          else {
+              JOptionPane.showMessageDialog(null,"INVALID CREDENTIALS");
+              admin = true;
+          }
+      } 
+          
+     } 
+           // if user input 2 he or she will be redirected to transaction process
+       else if (LogChoice == 2){
+           transact();
+           
+       }
+       else if(LogChoice == 3){
+           JOptionPane.showMessageDialog(null,"TERMINATING PROGRAM");
+         
+           System.exit(0);
+       }
+       else{
+           JOptionPane.showMessageDialog(null,"INVALID INPUT");
+           main = true;
+       }
+      
+        
+      }
+      
+      }
+    public static void main(String[] args) {
+     
+       add();
+    
+    }
+    
+    // this will be the administrator controls
+    public static void adControl(){
+       
+      boolean adCont = true;
+      while(adCont == true){
+          adcontr = Integer.parseInt(JOptionPane.showInputDialog("ADMINISTRATOR CONTROL\n[1]ADD PRODUCT\n[2]DELETE PRODUCT\n"
+                 + "[3]CHANGE PRODUCT NAME\n[4]CHANGE PRODUCT PRICE\n[5]CHANGE PRODUCT CODE[6]TRANSACT\n[7]END PROGRAM"));
+         if (adcontr == 1){
+             add();
+             
+         }
+         else if (adcontr == 2){
+             // the user will be redirected to deleteproduct method
+             deletepr();
+         }
+         else if (adcontr == 3 ){
+             // the user will be redirected to transaction method
+            prNAME();
+         }
+         else if(adcontr == 4){
+           prCHANGE();
+         }
+         else if (adcontr == 5){
+             prCODE();
+         }
+         else if(adcontr == 6){
+            transact();
+         }
+         else if(adcontr == 7){
+             JOptionPane.showMessageDialog(null,"Terminating Program");
+             System.exit(0);
+        
+         }
+         else {
+             JOptionPane.showMessageDialog(null,"INPUT INVALID");
+             adCont = true;
+         }
+      }
+      
+    }
+   
+    // here will be removal of products or overidding the products
+    private static void deletepr(){
+     boolean main = true;
+     boolean rep = true;
+     boolean rephere = true;
+     while(main == true){
+         
+         // if the array list will be just 10 products this will be prompt
+         // the sequence is 
+         // if price 11 is equals to 10 then the whole items will be limeted to 10 lang 
+         // but if price15 is not equals to 0 then taman 15 ang mga items na available 
+     if (price[11] == 0){    
+     
+        transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"));
+    
+    }
+     // but if array no. 15 is not equals to 0 it means that it has a value that is beeing stock inside the array
+     else if (price[15]  != 0){
+          
+        transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+                 +prodCODE[15] + "\t"  + product[15] + "\t"+ price[15] +"\n"      
+        ));
+     }
+     else if (price[14]  != 0){
+       transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+        ));
+     }
+     else if (price[13]  != 0){
+      transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+        ));
+     }
+     else if (price[12]  != 0){
+      transaction  =JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+        ));
+     }
+     else if (price[11]  != 0){
+      transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+             )); 
+     }
+     
+     // if not feature is must to be added
+     // do you want to delete this product permanently?
+     if(transaction.equalsIgnoreCase(prodCODE[1])){
+         if (price[1] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[1] = 0;
+                product[1] = "PRODUCT DELETED   ";
+                prodCODE[1] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[1] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+     else if (transaction.equalsIgnoreCase(prodCODE[2])){
+         if (price[2] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[2] = 0;
+                product[2] = "PRODUCT DELETED   ";
+                prodCODE[2] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[2] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction.equalsIgnoreCase(prodCODE[3])){
+             if (price[3] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[3]= 0;
+                product[3] = "PRODUCT DELETED   ";
+                prodCODE[3] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[3] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction.equalsIgnoreCase(prodCODE[4])){
+             if (price[4] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[4] = 0;
+                product[4] = "PRODUCT DELETED   ";
+                prodCODE[4] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[4] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction.equalsIgnoreCase(prodCODE[5])){
+            if (price[5] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[5] = 0;
+                product[5] = "PRODUCT DELETED   ";
+                prodCODE[5] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[5] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction.equalsIgnoreCase(prodCODE[6])){
+             if (price[6] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[6] = 0;
+                product[6] = "PRODUCT DELETED   ";
+                prodCODE[6] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[6] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction.equalsIgnoreCase(prodCODE[7])){
+           if (price[7] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[7] = 0;
+                product[7] = "PRODUCT DELETED   ";
+                prodCODE[7] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[7] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction .equalsIgnoreCase(prodCODE[8])){
+         if (price[8] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[8] = 0;
+                product[8] = "PRODUCT DELETED   ";
+                prodCODE[8] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[8] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction.equalsIgnoreCase(prodCODE[9])){
+         if (price[9] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[9] = 0;
+                product[9] = "PRODUCT DELETED   ";
+                prodCODE[9] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[9] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction .equalsIgnoreCase(prodCODE[10])){
+         if (price[10] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[10] = 0;
+                product[10] = "PRODUCT DELETED   ";
+                prodCODE[10] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[10] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+      else if (transaction .equalsIgnoreCase(prodCODE[11])){
+         if (price[11] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[11] = 0;
+                product[11] = "PRODUCT DELETED   ";
+                prodCODE[11] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[11] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+        else if (transaction .equalsIgnoreCase(prodCODE[12])){
+         if (price[12] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[12] = 0;
+                product[12] = "PRODUCT DELETED   ";
+                prodCODE[12] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[12] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+        else if (transaction.equalsIgnoreCase(prodCODE[13])){
+         if (price[13] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[13] = 0;
+                product[13] = "PRODUCT DELETED   ";
+                prodCODE[13] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[13] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+        else if (transaction.equalsIgnoreCase(prodCODE[14])){
+         if (price[14] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[14] = 0;
+                product[14] = "PRODUCT DELETED   ";
+                prodCODE[14] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[14] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+        else if (transaction.equalsIgnoreCase(prodCODE[15])){
+         if (price[15] !=0) {  
+             int input = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE the product permanently?", "Select an Option...",JOptionPane.YES_NO_OPTION);
+                    if(input == 0){
+                  price[15] = 0;
+                product[15] = "PRODUCT DELETED   ";
+                prodCODE[15] = " ";
+                deleteproc();
+            } 
+           
+            else if (input == 1){
+            deletepr();
+                }   
+            else {
+                    JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                   
+                }  
+     }
+        
+     
+        else if (price[15] == 0){
+           JOptionPane.showMessageDialog(null,"PRODUCT SLOT IS CURRENTLY EMPTY");
+         main = true;
+     }
+   }
+        else {
+             JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+             deletepr();
+        }
+    
+    }
+   }
+    public static void deleteproc(){
+        boolean rephere = true;
+     while(rephere == true){
+     int choicehere = Integer.parseInt(JOptionPane.showInputDialog("DO YOU WANT TO DELETE ANOTHER PRODUCT?\n[1]YES\n[2]NO"));
+       if(choicehere == 1){
+           rephere = true;
+          deletepr();
+       }
+       else if (choicehere == 2){
+           adControl();
+       }
+       else {
+           JOptionPane.showMessageDialog(null,"INVALID INPUT");
+           rephere = true;
+       }
+     }
+    }
+     
+   
+     
+    public static void add(){
+        boolean rept = true;         
+         transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+                 +prodCODE[15] + "\t"  + product[15] + "\t"+ price[15] +"\n"      
+        ));
+   
+        
+     if(transaction.equalsIgnoreCase(prodCODE[1])){
+           if(price[1] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+                   add();
+              }
+           
+           else if (price[1] == 0){
+                   while(rept == false) {    
+                  product[1] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  if(product[1].equalsIgnoreCase(product[2])&&product[1].equalsIgnoreCase(product[3])
+                          &&product[1].equalsIgnoreCase(product[4])&&product[1].equalsIgnoreCase(product[5])
+                          &&product[1].equalsIgnoreCase(product[6])&&product[1].equalsIgnoreCase(product[7])
+                          &&product[1].equalsIgnoreCase(product[8])&&product[1].equalsIgnoreCase(product[9])
+                          &&product[1].equalsIgnoreCase(product[10])&&product[1].equalsIgnoreCase(product[11])
+                          &&product[1].equalsIgnoreCase(product[12])&&product[1].equalsIgnoreCase(product[13])
+                          &&product[1].equalsIgnoreCase(product[14])&&product[1].equalsIgnoreCase(product[15])){
+                       
+                      price[1] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));         
+                      
+                      JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[1] +"\nPRODUCT PRICE : "+ price[1] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILABE");
+                                    rept = false;
+                        }
+                 
+                }
+           }
+     }
+     
+     else if (transaction.equalsIgnoreCase(prodCODE[2])){
+          if(price[2] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+          add();    
+          }
+           else if (price[2] == 0){
+                   while(rept == true) {
+                      
+                  product[2] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[2].equalsIgnoreCase(product[1])&&product[2].equalsIgnoreCase(product[3])&&product[2].equalsIgnoreCase(product[4])
+                          &&product[2].equalsIgnoreCase(product[5])&&product[2].equalsIgnoreCase(product[6])
+                          &&product[2].equalsIgnoreCase(product[7])&&product[2].equalsIgnoreCase(product[8])
+                          &&product[2].equalsIgnoreCase(product[9])&&product[2].equalsIgnoreCase(product[10])
+                          &&product[2].equalsIgnoreCase(product[11])&&product[2].equalsIgnoreCase(product[12])
+                          &&product[2].equalsIgnoreCase(product[13])&&product[2].equalsIgnoreCase(product[14])
+                          &&product[2].equalsIgnoreCase(product[15])){
+                      
+                  price[2] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[2] +"\nPRODUCT PRICE : "+ price[2] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+      else if (transaction.equalsIgnoreCase(prodCODE[3])){
+           if(price[3] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+          add();
+           }
+           else if (price[3] == 0){
+                   while(rept == true) {
+                      
+                  product[3] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[3].equalsIgnoreCase(product[1])&&product[3].equalsIgnoreCase(product[2])&&product[3].equalsIgnoreCase(product[4])
+                          &&product[3].equalsIgnoreCase(product[5])&&product[3].equalsIgnoreCase(product[6])
+                          &&product[3].equalsIgnoreCase(product[7])&&product[3].equalsIgnoreCase(product[8])
+                          &&product[3].equalsIgnoreCase(product[9])&&product[3].equalsIgnoreCase(product[10])
+                          &&product[3].equalsIgnoreCase(product[11])&&product[3].equalsIgnoreCase(product[12])
+                          &&product[3].equalsIgnoreCase(product[13])&&product[3].equalsIgnoreCase(product[14])
+                          &&product[3].equalsIgnoreCase(product[15]))
+                  {
+                      price[3] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[3] +"\nPRODUCT PRICE : "+ price[3] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+      
+      else if (transaction.equalsIgnoreCase(prodCODE[4])){
+           if(price[4] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[4] == 0){
+                   while(rept == true) {
+                      
+                  product[4] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[4].equalsIgnoreCase(product[1])&&product[4].equalsIgnoreCase(product[2])&&product[4].equalsIgnoreCase(product[4])
+                          &&product[4].equalsIgnoreCase(product[5])&&product[4].equalsIgnoreCase(product[6])
+                          &&product[4].equalsIgnoreCase(product[7])&&product[4].equalsIgnoreCase(product[8])
+                          &&product[4].equalsIgnoreCase(product[9])&&product[4].equalsIgnoreCase(product[10])
+                          &&product[4].equalsIgnoreCase(product[11])&&product[4].equalsIgnoreCase(product[12])
+                          &&product[4].equalsIgnoreCase(product[13])&&product[4].equalsIgnoreCase(product[14])
+                          &&product[4].equalsIgnoreCase(product[15])){
+                      
+                  price[4] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE")); 
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[4] +"\nPRODUCT PRICE : "+ price[4] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    } 
+     
+      else if (transaction.equalsIgnoreCase(prodCODE[5])){
+          if(price[5] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+          add(); 
+          }
+           else if (price[5] == 0){
+                   while(rept == true) {
+                      
+                  product[5] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[5] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[5].equalsIgnoreCase(product[1])&&product[5].equalsIgnoreCase(product[2])&&product[5].equalsIgnoreCase(product[4])
+                          &&product[5].equalsIgnoreCase(product[5])&&product[5].equalsIgnoreCase(product[6])
+                          &&product[5].equalsIgnoreCase(product[7])&&product[5].equalsIgnoreCase(product[8])
+                          &&product[5].equalsIgnoreCase(product[9])&&product[5].equalsIgnoreCase(product[10])
+                          &&product[5].equalsIgnoreCase(product[11])&&product[5].equalsIgnoreCase(product[12])
+                          &&product[5].equalsIgnoreCase(product[13])&&product[5].equalsIgnoreCase(product[14])
+                          &&product[5].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[2] +"\nPRODUCT PRICE : "+ price[2] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+      
+      else if (transaction.equalsIgnoreCase(prodCODE[6])){
+           if(price[6] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+          add();
+           }
+           else if (price[6] == 0){
+                   while(rept == true) {
+                      
+                  product[6] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[6] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[6].equalsIgnoreCase(product[1])&&product[6].equalsIgnoreCase(product[2])&&product[6].equalsIgnoreCase(product[4])
+                          &&product[6].equalsIgnoreCase(product[5])&&product[6].equalsIgnoreCase(product[6])
+                          &&product[6].equalsIgnoreCase(product[7])&&product[6].equalsIgnoreCase(product[8])
+                          &&product[6].equalsIgnoreCase(product[9])&&product[6].equalsIgnoreCase(product[10])
+                          &&product[6].equalsIgnoreCase(product[11])&&product[6].equalsIgnoreCase(product[12])
+                          &&product[6].equalsIgnoreCase(product[13])&&product[6].equalsIgnoreCase(product[14])
+                          &&product[6].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[6] +"\nPRODUCT PRICE : "+ price[6] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+      
+      else if (transaction.equalsIgnoreCase(prodCODE[7])){
+           if(price[7] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[7] == 0){
+                   while(rept == true) {
+                      
+                  product[7] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[7] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[7].equalsIgnoreCase(product[1])&&product[3].equalsIgnoreCase(product[2])&&product[3].equalsIgnoreCase(product[4])
+                          &&product[7].equalsIgnoreCase(product[5])&&product[7].equalsIgnoreCase(product[6])
+                          &&product[7].equalsIgnoreCase(product[7])&&product[7].equalsIgnoreCase(product[8])
+                          &&product[7].equalsIgnoreCase(product[9])&&product[7].equalsIgnoreCase(product[10])
+                          &&product[7].equalsIgnoreCase(product[11])&&product[7].equalsIgnoreCase(product[12])
+                          &&product[7].equalsIgnoreCase(product[13])&&product[7].equalsIgnoreCase(product[14])
+                          &&product[7].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[7] +"\nPRODUCT PRICE : "+ price[7] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+      
+      else if (transaction.equalsIgnoreCase(prodCODE[8])){
+           if(price[8] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[8] == 0){
+                   while(rept == true) {
+                      
+                  product[8] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[8] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[8].equalsIgnoreCase(product[1])&&product[8].equalsIgnoreCase(product[2])&&product[8].equalsIgnoreCase(product[4])
+                          &&product[8].equalsIgnoreCase(product[5])&&product[8].equalsIgnoreCase(product[6])
+                          &&product[8].equalsIgnoreCase(product[7])&&product[8].equalsIgnoreCase(product[8])
+                          &&product[8].equalsIgnoreCase(product[9])&&product[8].equalsIgnoreCase(product[10])
+                          &&product[8].equalsIgnoreCase(product[11])&&product[8].equalsIgnoreCase(product[12])
+                          &&product[8].equalsIgnoreCase(product[13])&&product[8].equalsIgnoreCase(product[14])
+                          &&product[8].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[8] +"\nPRODUCT PRICE : "+ price[8] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    } 
+      
+      else if (transaction.equalsIgnoreCase(prodCODE[9])){
+           if(price[9] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[9] == 0){
+                   while(rept == true) {
+                      
+                  product[9] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[9] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[9].equalsIgnoreCase(product[1])&&product[9].equalsIgnoreCase(product[2])&&product[9].equalsIgnoreCase(product[4])
+                          &&product[9].equalsIgnoreCase(product[5])&&product[9].equalsIgnoreCase(product[6])
+                          &&product[9].equalsIgnoreCase(product[7])&&product[9].equalsIgnoreCase(product[8])
+                          &&product[9].equalsIgnoreCase(product[9])&&product[9].equalsIgnoreCase(product[10])
+                          &&product[9].equalsIgnoreCase(product[11])&&product[9].equalsIgnoreCase(product[12])
+                          &&product[9].equalsIgnoreCase(product[13])&&product[9].equalsIgnoreCase(product[14])
+                          &&product[9].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[9] +"\nPRODUCT PRICE : "+ price[9] +"SUCCESFULLY ADDED");
+                   adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+      
+      else if (transaction.equalsIgnoreCase(prodCODE[10])){
+           if(price[10] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[10] == 0){
+                   while(rept == true) {
+                      
+                  product[10] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[10] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[10].equalsIgnoreCase(product[1])&&product[3].equalsIgnoreCase(product[2])&&product[3].equalsIgnoreCase(product[4])
+                          &&product[10].equalsIgnoreCase(product[5])&&product[10].equalsIgnoreCase(product[6])
+                          &&product[10].equalsIgnoreCase(product[7])&&product[10].equalsIgnoreCase(product[8])
+                          &&product[10].equalsIgnoreCase(product[9])&&product[10].equalsIgnoreCase(product[10])
+                          &&product[10].equalsIgnoreCase(product[11])&&product[10].equalsIgnoreCase(product[12])
+                          &&product[10].equalsIgnoreCase(product[13])&&product[10].equalsIgnoreCase(product[14])
+                          &&product[10].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[10] +"\nPRODUCT PRICE : "+ price[10 ] +"SUCCESFULLY ADDED");
+                    adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }     
+     else if (transaction.equalsIgnoreCase(prodCODE[11])){
+           if(price[11] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[11] == 0){
+                   while(rept == true) {
+                      
+                  product[11] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[11] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[11].equalsIgnoreCase(product[1])&&product[11].equalsIgnoreCase(product[2])&&product[11].equalsIgnoreCase(product[3])
+                          &&product[11].equalsIgnoreCase(product[4])&&product[11].equalsIgnoreCase(product[5])
+                          &&product[11].equalsIgnoreCase(product[6])&&product[11].equalsIgnoreCase(product[7])
+                          &&product[11].equalsIgnoreCase(product[8])&&product[11].equalsIgnoreCase(product[9])
+                          &&product[11].equalsIgnoreCase(product[10])&&product[11].equalsIgnoreCase(product[12])
+                          &&product[11].equalsIgnoreCase(product[13])&&product[11].equalsIgnoreCase(product[14])
+                          &&product[11].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[2] +"\nPRODUCT PRICE : "+ price[2] +"SUCCESFULLY ADDED");
+                 adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+      
+     else if (transaction.equalsIgnoreCase(prodCODE[12])){
+           if(price[12] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[12] == 0){
+                   while(rept == true) {
+                      
+                  product[12] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[12] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[12].equalsIgnoreCase(product[1])&&product[12].equalsIgnoreCase(product[2])&&product[12].equalsIgnoreCase(product[3])
+                          &&product[12].equalsIgnoreCase(product[4])&&product[12].equalsIgnoreCase(product[5])
+                          &&product[12].equalsIgnoreCase(product[6])&&product[12].equalsIgnoreCase(product[7])
+                          &&product[12].equalsIgnoreCase(product[8])&&product[12].equalsIgnoreCase(product[9])
+                          &&product[12].equalsIgnoreCase(product[10])&&product[12].equalsIgnoreCase(product[11])
+                          &&product[12].equalsIgnoreCase(product[13])&&product[12].equalsIgnoreCase(product[14])
+                          &&product[12].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[12] +"\nPRODUCT PRICE : "+ price[12] +"SUCCESFULLY ADDED");
+                  adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+          
+          else if (transaction.equalsIgnoreCase(prodCODE[13])){
+           if(price[13] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[13] == 0){
+                   while(rept == true) {
+                      
+                  product[13] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[13] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[13].equalsIgnoreCase(product[1])&&product[13].equalsIgnoreCase(product[2])&&product[13].equalsIgnoreCase(product[4])
+                          &&product[13].equalsIgnoreCase(product[5])&&product[13].equalsIgnoreCase(product[6])
+                          &&product[13].equalsIgnoreCase(product[7])&&product[13].equalsIgnoreCase(product[8])
+                          &&product[13].equalsIgnoreCase(product[9])&&product[13].equalsIgnoreCase(product[10])
+                          &&product[13].equalsIgnoreCase(product[11])&&product[13].equalsIgnoreCase(product[12])
+                          &&product[13].equalsIgnoreCase(product[14])&&product[13].equalsIgnoreCase(product[3])
+                          &&product[13].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[13] +"\nPRODUCT PRICE : "+ price[13] +"SUCCESFULLY ADDED");
+                  adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+          
+          else if (transaction.equalsIgnoreCase(prodCODE[14])){
+           if(price[14] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[14] == 0){
+                   while(rept == true) {
+                      
+                  product[14] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[14] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[14].equalsIgnoreCase(product[1])&&product[14].equalsIgnoreCase(product[2])&&product[14].equalsIgnoreCase(product[3])
+                          &&product[14].equalsIgnoreCase(product[4])&&product[14].equalsIgnoreCase(product[5])
+                          &&product[14].equalsIgnoreCase(product[6])&&product[14].equalsIgnoreCase(product[7])
+                          &&product[14].equalsIgnoreCase(product[8])&&product[14].equalsIgnoreCase(product[9])
+                          &&product[14].equalsIgnoreCase(product[10])&&product[14].equalsIgnoreCase(product[11])
+                          &&product[14].equalsIgnoreCase(product[12])&&product[14].equalsIgnoreCase(product[13])
+                          &&product[14].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[14] +"\nPRODUCT PRICE : "+ price[14] +"SUCCESFULLY ADDED");
+        adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+          
+   else if (transaction.equalsIgnoreCase(prodCODE[15])){
+           if(price[15] != 0 ){
+                   JOptionPane.showMessageDialog(null, "SLOT IS OCCUPIED");
+           add();
+           }
+           else if (price[15] == 0){
+                   while(rept == true) {
+                      
+                  product[15] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[15] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[15].equalsIgnoreCase(product[1])&&product[15].equalsIgnoreCase(product[2])&&product[15].equalsIgnoreCase(product[3])
+                          &&product[15].equalsIgnoreCase(product[4])&&product[15].equalsIgnoreCase(product[5])
+                          &&product[15].equalsIgnoreCase(product[6])&&product[15].equalsIgnoreCase(product[7])
+                          &&product[15].equalsIgnoreCase(product[8])&&product[15].equalsIgnoreCase(product[9])
+                          &&product[15].equalsIgnoreCase(product[10])&&product[15].equalsIgnoreCase(product[11])
+                          &&product[15].equalsIgnoreCase(product[12])&&product[15].equalsIgnoreCase(product[13])
+                          &&product[15].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[15] +"\nPRODUCT PRICE : "+ price[15] +"SUCCESFULLY ADDED");
+                         adcontrl();
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }
+    }
+        else {
+             JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+             add();
+        }
+     }
+        
+    
+       
+        public static void adcontrl(){
+     boolean here = true;
+     while(here == true){
+         int choicehere = Integer.parseInt(JOptionPane.showInputDialog("DO YOU WANT TO ADD ANOTHER PRODUCT?\n[1]YES\n[2]NO"));
+            if(choicehere == 1){
+                add();
+            }
+            else if (choicehere == 2){
+                adControl();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+                here = true;
+            }
+     }
+    }
+    
+    
+   
+    
+        
+
+
+    private static void transact() {
+       
+     boolean main = true;
+     boolean rep = true;
+     while(main == true){
+         
+         
+     if (price[11] == 0){    
+       transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                ));
+    
+    }
+     else if (price[15]  != 0){
+          
+        transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+                 +prodCODE[15] + "\t"  + product[15] + "\t"+ price[15] +"\n"      
+        ));
+     }
+     else if (price[14]  != 0){
+          
+        transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+               
+        ));
+     }
+     else if (price[13]  != 0){
+         transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+              
+        ));
+     }
+     else if (price[12]  != 0){
+          
+        transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+        ));
+     }
+     else if (price[11]  != 0){
+          
+         transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                  
+        ));
+     }
+      if(transaction.equalsIgnoreCase(prodCODE[1])){
+         if(price[1] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[2] != 0){
+           qty[1] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[1] += qty[1] * price[1];
+           main = false;}
+     }
+     else if (transaction.equalsIgnoreCase(prodCODE[2])){
+          if(price[2] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[2] != 0){
+       qty[2] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[2] += qty[2] * price[2];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[3])){
+           if(price[3] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[3] != 0){
+       qty[3] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[3] += qty[3] * price[3];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[4])){
+           if(price[4] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[4] != 0){
+       qty[4] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[4] += qty[4] * price[4];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[5])){
+           if(price[5] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[5] != 0){
+       qty[5] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[5] += qty[5] * price[5];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[6])){
+          if(price[6] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[6] != 0){
+       qty[6] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[6] += qty[6] * price[6];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[7])){
+          if(price[7] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[7] != 0){
+       qty[7] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[7] += qty[7] * price[7];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[8])){
+          if(price[8] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[8] != 0){
+       qty[8] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[8] += qty[8] * price[8];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[9])){
+          if(price[9] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[9] != 0){
+       qty[9] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[9] += qty[9] * price[9];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[10])){
+          if(price[10] == 0){
+             JOptionPane.showMessageDialog(null,"PRODUCT UNAVAILABLE");
+             transact();
+         }else if (price[10] != 0){
+       qty[10] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[10] += qty[10] * price[10];
+           main = false;}
+     }
+      else if (transaction.equalsIgnoreCase(prodCODE[11])){
+          if (price[11] == 0){
+              JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+              main = true;
+     }
+          else if (price[11] != 0) {
+               qty[11] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[11] += qty[11] * price[11];
+           main = false;
+          }
+      }
+        else if (transaction.equalsIgnoreCase(prodCODE[12])){
+          if (price[12] == 0){
+              JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+              main = true;
+     }
+          else if (price[12] != 0) {
+               qty[12] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+               f_qty[12] += qty[12] * price[2];
+           main = false;
+          }
+      }
+        else if (transaction.equalsIgnoreCase(prodCODE[13])){
+          if (price[13] == 0){
+              JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+              main = true;
+     }
+          else if (price[13] != 0) {
+               qty[13] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[13] += qty[13] * price[13];
+           main = false;
+          }
+      }
+        else if (transaction.equalsIgnoreCase(prodCODE[14])){
+          if (price[14] == 0){
+              JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+              main = true;
+     }
+          else if (price[14] != 0) {
+               qty[14] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[14] += qty[14] * price[14];
+           main = false;
+          }
+      }
+        else if (transaction.equalsIgnoreCase(prodCODE[15])){
+          if (price[15] == 0){
+              JOptionPane.showMessageDialog(null,"INVAlID INPUT");
+              main = true;
+     }
+          else if (price[15] != 0) {
+               qty[15] = Integer.parseInt(JOptionPane.showInputDialog("ENTER QUANTITY"));
+           f_qty[15] += qty[15] * price[15];
+           main = false;
+          }
+      }
+        else{
+            JOptionPane.showMessageDialog(null,"INVALID INPUT");
+            transact();
+        }
+    
+    }
+     while(rep == true){
+            int choice = Integer.parseInt(JOptionPane.showInputDialog("DO YOU WANT TO PURCHASE AGAIN?\n[1]YES\n[2]NO"));
+            if(choice == 1){
+               transact();
+            }
+            else if (choice == 2){
+                
+                total();
+            }
+     }
+    }
+
+    private static void total() {
+        boolean main = true;  
+            
+           final_total = f_qty[1]+f_qty[2]+f_qty[3]+f_qty[4]+f_qty[5]+f_qty[6]+f_qty[7]+f_qty[8]+f_qty[9]+f_qty[10]+f_qty[11]+f_qty[12]+f_qty[12]+f_qty[13]+f_qty[14]+f_qty[15];
+          while(main == true){
+              
+           payment  = Integer.parseInt(JOptionPane.showInputDialog("TOTAL = " + final_total));
+           change = payment - final_total;
+      if(payment == final_total){
+          JOptionPane.showMessageDialog(null,"TOTAL = P" +final_total +  "\nPAYMENT = P"+payment+"\nCHANGE = P"+change);
+          choice();
+       
+      }
+          else if(payment > final_total ){
+            JOptionPane.showMessageDialog(null,"TOTAL = P" +final_total +  "\nPAYMENT = P"+payment+"\nCHANGE = P"+change);
+           choice();
+        }
+        else if (payment < final_total){
+             JOptionPane.showMessageDialog(null,"INVALID INPUT");
+             main = true;
+        }
+    }
+  }
+    public static void choice(){
+          boolean main = true;  
+        
+          while(main == true){
+               
+         choiceheresir  = Integer.parseInt(JOptionPane.showInputDialog("DO YOU WANT TO TRANSACT AGAIN?\n[1]YES\n[2]NO "));
+        if(choiceheresir == 1){
+          
+            recent();
+        }
+        else if (choiceheresir == 2){
+           reciept();
+        }
+        else {
+            
+        
+          JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                            main = true;
+        }
+        }
+    
+    }
+        private static void recent(){
+            boolean main = true;
+            while(main == true){
+              Costumer = Integer.parseInt(JOptionPane.showInputDialog("NEW CONSTUMER?\n[1]YES\n[2]NO"));
+                
+                        if(Costumer == 1){        
+                            reciept();
+                        }
+                        else if(Costumer == 2){
+                            final_total = 0;
+                              reciept();
+                            }
+                        else{
+                            JOptionPane.showMessageDialog(null,"INVALID INPUT");
+                            main = true;
+                        }
+                        
+            }
+           }
+          
+        
+
+    private static void reciept() {
+        
+          if (Costumer == 2){
+              transact();
+          }
+        System.out.println("-------------------------- HayDien Milk Tea ------------------------");
+        System.out.println("-------------------- DAMILAG MANOLO FORTICH BUKIDNON------------------- ");  
+        System.out.println("-----------------------   OFFICIAL RECIEPT   ------------------------");
+     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("----------yyyy/MM/dd HH:mm:ss-----------");
+	LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+      
+               
+        if(f_qty[1] != 0){
+            System.out.println(product[1] +"         "+ qty[1] +"           "+ f_qty[1] );
+        }
+         if(f_qty[2] != 0){
+            System.out.println(product[2] +"         "+ qty[2] +"           "+ f_qty[2] );
+        }
+          if(f_qty[3] != 0){
+            System.out.println(product[3] +"         "+ qty[3] +"           "+ f_qty[3] );
+        }
+           if(f_qty[4] != 0){
+            System.out.println(product[4] +"         "+ qty[4] +"           "+ f_qty[4] );
+        }
+            if(f_qty[5] != 0){
+            System.out.println(product[5] +"         "+ qty[5] +"           "+ f_qty[5] );
+        }
+            if(f_qty[6] != 0){
+            System.out.println(product[6] +"         "+ qty[6] +"           "+ f_qty[6] );
+        }
+             if(f_qty[7] != 0){
+            System.out.println(product[7] +"         "+ qty[7] +"           "+ f_qty[7] );
+        }
+              if(f_qty[8] != 0){
+            System.out.println(product[8] +"         "+ qty[8] +"           "+ f_qty[8] );
+        }
+               if(f_qty[9] != 0){
+            System.out.println(product[9] +"         "+ qty[9] +"           "+ f_qty[9] );
+        }
+                if(f_qty[10] != 0){
+            System.out.println(product[10] +"         "+ qty[10] +"           "+ f_qty[10] );
+        }
+                 if(f_qty[11] != 0){
+            System.out.println(product[11] +"         "+ qty[11] +"           "+ f_qty[11] );
+        }
+                  if(f_qty[12] != 0){
+            System.out.println(product[12] +"         "+ qty[12] +"           "+ f_qty[12] );
+        }
+                   if(f_qty[13] != 0){
+            System.out.println(product[13] +"         "+ qty[13] +"           "+ f_qty[13] );
+        }
+                    if(f_qty[14] != 0){
+            System.out.println(product[14] +"         "+ qty[14] +"           "+ f_qty[14] );
+        }
+                     if(f_qty[15] != 0){
+            System.out.println(product[15] +"         "+ qty[15] +"           "+ f_qty[15] );
+        }
+              
+          System.out.println("TOTAL PURCHACES = P" +final_total +  "\nPAYMENT = P"+payment+"\nCHANGE = P"+change);
+        System.out.println("\nOFFICIAL RECEIPT\nThank you! Come again.\n\n---------------------------\n\n");
+           
+          if(Costumer == 1){
+               qty[1] = 0;qty[2] = 0;qty[3] = 0;qty[4] = 0;qty[5] = 0;qty[6] = 0;qty[7] = 0;qty[8] = 0;qty[9] = 0;qty[10] = 0;
+                            qty[11] = 0;qty[12] = 0;qty[13] = 0;qty[14] = 0;qty[15] = 0;
+                            f_qty[1] = 0;f_qty[2] = 0;f_qty[3] = 0;f_qty[4] = 0;f_qty[5] = 0;f_qty[6] = 0;f_qty[7] = 0;f_qty[8] = 0;f_qty[9] = 0;f_qty[10] = 0;
+                            f_qty[11] = 0;f_qty[12] = 0;f_qty[13] = 0;f_qty[14] = 0;f_qty[15] = 0;
+                            final_total = 0;
+                            Costumer =0;
+              transact();      
+          }
+        
+          if(choiceheresir == 1){
+              Costumer = 0 ;
+               transact();
+           }
+                           
+          
+          f();
+    
+                 
+    
+    
+    }
+
+
+
+
+public static void prNAME(){
+    if(adcontr == 3){
+    JOptionPane.showMessageDialog(null, new JTextArea("NOTICE TO ADMINISTRATOR\nIN CHANGING THE PRODUCT NAME \nTHE PRODUCT CODE MUST BE THE FIRST TO BE CHANGE \nINCASE THAT YOU RECIEVE THIS PROPT YOU WILL BE REDIRECTED TO PRODUCT CODE FEATURE IMMIDIATELY"));
+        prCODE();
+    }
+    boolean code = true;
+    boolean main = true, rept = true;
+    while(main == true){
+            
+        transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+                 +prodCODE[15] + "\t"  + product[15] + "\t"+ price[15] +"\n"      
+        ));
+    }
+    
+    if(transaction.equalsIgnoreCase(prodCODE[1])){
+    while(rept == true) {
+                  product[1] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                    if(product[1].equalsIgnoreCase(product[2])&&product[1].equalsIgnoreCase(product[2])&&product[1].equalsIgnoreCase(product[3])
+                          &&product[1].equalsIgnoreCase(product[4])&&product[1].equalsIgnoreCase(product[5])
+                          &&product[1].equalsIgnoreCase(product[6])&&product[1].equalsIgnoreCase(product[7])
+                          &&product[1].equalsIgnoreCase(product[8])&&product[1].equalsIgnoreCase(product[9])
+                          &&product[1].equalsIgnoreCase(product[10])&&product[1].equalsIgnoreCase(product[11])
+                          &&product[1].equalsIgnoreCase(product[12])&&product[1].equalsIgnoreCase(product[13])
+                          &&product[1].equalsIgnoreCase(product[14])){
+                  
+                       JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[1] +"\nPRODUCT PRICE : "+ price[11] +"SUCCESFULLY ADDED");  
+                         prcont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[1] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+    
+    else if (transaction.equalsIgnoreCase(prodCODE[2])){
+         while(rept == true) {
+                      
+                  product[2] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[2].equalsIgnoreCase(product[1])&&product[2].equalsIgnoreCase(product[3])&&product[2].equalsIgnoreCase(product[3])
+                          &&product[2].equalsIgnoreCase(product[4])&&product[2].equalsIgnoreCase(product[5])
+                          &&product[2].equalsIgnoreCase(product[6])&&product[2].equalsIgnoreCase(product[7])
+                          &&product[2].equalsIgnoreCase(product[8])&&product[2].equalsIgnoreCase(product[9])
+                          &&product[2].equalsIgnoreCase(product[10])&&product[2].equalsIgnoreCase(product[11])
+                          &&product[2].equalsIgnoreCase(product[12])&&product[2].equalsIgnoreCase(product[13])
+                          &&product[2].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[2] +"\nPRODUCT PRICE : "+ price[2] +"SUCCESFULLY ADDED");
+                  
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[2] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[3])){
+        while(rept == true) {
+                      
+                  product[3] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[3].equalsIgnoreCase(product[1])&&product[3].equalsIgnoreCase(product[2])&&product[3].equalsIgnoreCase(product[4])
+                          &&product[3].equalsIgnoreCase(product[4])&&product[3].equalsIgnoreCase(product[5])
+                          &&product[3].equalsIgnoreCase(product[6])&&product[3].equalsIgnoreCase(product[7])
+                          &&product[3].equalsIgnoreCase(product[8])&&product[3].equalsIgnoreCase(product[9])
+                          &&product[3].equalsIgnoreCase(product[10])&&product[3].equalsIgnoreCase(product[11])
+                          &&product[3].equalsIgnoreCase(product[12])&&product[3].equalsIgnoreCase(product[13])
+                          &&product[3].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[3] +"\nPRODUCT PRICE : "+ price[3] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[3] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[4])){
+        while(rept == true) {
+                      
+                  product[4] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[4].equalsIgnoreCase(product[1])&&product[4].equalsIgnoreCase(product[2])&&product[4].equalsIgnoreCase(product[2])
+                          &&product[4].equalsIgnoreCase(product[5])&&product[4].equalsIgnoreCase(product[5])
+                          &&product[4].equalsIgnoreCase(product[6])&&product[4].equalsIgnoreCase(product[7])
+                          &&product[4].equalsIgnoreCase(product[8])&&product[4].equalsIgnoreCase(product[9])
+                          &&product[4].equalsIgnoreCase(product[10])&&product[4].equalsIgnoreCase(product[11])
+                          &&product[4].equalsIgnoreCase(product[12])&&product[4].equalsIgnoreCase(product[13])
+                          &&product[4].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[4] +"\nPRODUCT PRICE : "+ price[4] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[4] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[5])){
+        while(rept == true) {
+                      
+                  product[5] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[5].equalsIgnoreCase(product[1])&&product[15].equalsIgnoreCase(product[2])&&product[5].equalsIgnoreCase(product[3])
+                          &&product[5].equalsIgnoreCase(product[4])&&product[5].equalsIgnoreCase(product[6])
+                          &&product[5].equalsIgnoreCase(product[6])&&product[5].equalsIgnoreCase(product[7])
+                          &&product[5].equalsIgnoreCase(product[8])&&product[5].equalsIgnoreCase(product[9])
+                          &&product[5].equalsIgnoreCase(product[10])&&product[5].equalsIgnoreCase(product[11])
+                          &&product[5].equalsIgnoreCase(product[12])&&product[5].equalsIgnoreCase(product[13])
+                          &&product[5].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[5] +"\nPRODUCT PRICE : "+ price[5] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[1] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[6])){
+        while(rept == true) {
+                      
+                  product[15] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[15] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[6].equalsIgnoreCase(product[1])&&product[6].equalsIgnoreCase(product[2])&&product[6].equalsIgnoreCase(product[3])
+                          &&product[6].equalsIgnoreCase(product[4])&&product[6].equalsIgnoreCase(product[5])
+                          &&product[6].equalsIgnoreCase(product[7])&&product[6].equalsIgnoreCase(product[8])
+                          &&product[6].equalsIgnoreCase(product[9])&&product[6].equalsIgnoreCase(product[10])
+                          &&product[6].equalsIgnoreCase(product[10])&&product[6].equalsIgnoreCase(product[11])
+                          &&product[6].equalsIgnoreCase(product[12])&&product[6].equalsIgnoreCase(product[13])
+                          &&product[6].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[6] +"\nPRODUCT PRICE : "+ price[6] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[6] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[7])){
+        while(rept == true) {
+                      
+                  product[7] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[7].equalsIgnoreCase(product[1])&&product[7].equalsIgnoreCase(product[2])&&product[7].equalsIgnoreCase(product[3])
+                          &&product[7].equalsIgnoreCase(product[4])&&product[7].equalsIgnoreCase(product[5])
+                          &&product[7].equalsIgnoreCase(product[6])&&product[7].equalsIgnoreCase(product[8])
+                          &&product[7].equalsIgnoreCase(product[9])&&product[7].equalsIgnoreCase(product[10])
+                          &&product[7].equalsIgnoreCase(product[11])&&product[7].equalsIgnoreCase(product[12])
+                          &&product[7].equalsIgnoreCase(product[13])&&product[7].equalsIgnoreCase(product[14])
+                          &&product[7].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[7] +"\nPRODUCT PRICE : "+ price[7] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[7] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[8])){
+        while(rept == true) {
+                      
+                  product[8] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[8].equalsIgnoreCase(product[1])&&product[8].equalsIgnoreCase(product[2])&&product[8].equalsIgnoreCase(product[3])
+                          &&product[8].equalsIgnoreCase(product[4])&&product[8].equalsIgnoreCase(product[5])
+                          &&product[8].equalsIgnoreCase(product[6])&&product[8].equalsIgnoreCase(product[7])
+                          &&product[8].equalsIgnoreCase(product[9])&&product[8].equalsIgnoreCase(product[10])
+                          &&product[8].equalsIgnoreCase(product[11])&&product[8].equalsIgnoreCase(product[12])
+                          &&product[8].equalsIgnoreCase(product[13])&&product[8].equalsIgnoreCase(product[14])
+                          &&product[8].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[8] +"\nPRODUCT PRICE : "+ price[8] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[8] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[9])){
+        while(rept == true) {
+                      
+                  product[8] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  if(product[9].equalsIgnoreCase(product[1])&&product[9].equalsIgnoreCase(product[2])&&product[9].equalsIgnoreCase(product[3])
+                          &&product[9].equalsIgnoreCase(product[4])&&product[9].equalsIgnoreCase(product[5])
+                          &&product[9].equalsIgnoreCase(product[6])&&product[9].equalsIgnoreCase(product[7])
+                          &&product[9].equalsIgnoreCase(product[8])&&product[9].equalsIgnoreCase(product[10])
+                          &&product[9].equalsIgnoreCase(product[11])&&product[9].equalsIgnoreCase(product[12])
+                          &&product[9].equalsIgnoreCase(product[13])&&product[9].equalsIgnoreCase(product[14])
+                          &&product[9].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[9] +"\nPRODUCT PRICE : "+ price[9] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[9] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[10])){
+        while(rept == true) {
+                      
+                  product[10] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  if(product[10].equalsIgnoreCase(product[1])&&product[10].equalsIgnoreCase(product[2])&&product[10].equalsIgnoreCase(product[3])
+                          &&product[10].equalsIgnoreCase(product[4])&&product[10].equalsIgnoreCase(product[5])
+                          &&product[10].equalsIgnoreCase(product[6])&&product[10].equalsIgnoreCase(product[7])
+                          &&product[10].equalsIgnoreCase(product[8])&&product[10].equalsIgnoreCase(product[9])
+                          &&product[10].equalsIgnoreCase(product[10])&&product[10].equalsIgnoreCase(product[11])
+                          &&product[10].equalsIgnoreCase(product[12])&&product[10].equalsIgnoreCase(product[13])
+                          &&product[10].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[10] +"\nPRODUCT PRICE : "+ price[10] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[10] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[11])){
+        while(rept == true) {
+                      
+                  product[15] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                 if(product[11].equalsIgnoreCase(product[1])&&product[15].equalsIgnoreCase(product[2])&&product[15].equalsIgnoreCase(product[3])
+                          &&product[11].equalsIgnoreCase(product[4])&&product[11].equalsIgnoreCase(product[5])
+                          &&product[11].equalsIgnoreCase(product[6])&&product[11].equalsIgnoreCase(product[7])
+                          &&product[11].equalsIgnoreCase(product[8])&&product[11].equalsIgnoreCase(product[9])
+                          &&product[11].equalsIgnoreCase(product[10])&&product[11].equalsIgnoreCase(product[12])
+                          &&product[11].equalsIgnoreCase(product[13])&&product[11].equalsIgnoreCase(product[14])
+                          &&product[11].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[11] +"\nPRODUCT PRICE : "+ price[11] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[11] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[12])){
+        while(rept == true) {
+                      
+                  product[12] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  
+                  if(product[12].equalsIgnoreCase(product[1])&&product[15].equalsIgnoreCase(product[2])&&product[15].equalsIgnoreCase(product[3])
+                          &&product[12].equalsIgnoreCase(product[4])&&product[12].equalsIgnoreCase(product[5])
+                          &&product[12].equalsIgnoreCase(product[6])&&product[12].equalsIgnoreCase(product[7])
+                          &&product[12].equalsIgnoreCase(product[8])&&product[12].equalsIgnoreCase(product[9])
+                          &&product[12].equalsIgnoreCase(product[10])&&product[12].equalsIgnoreCase(product[11])
+                          &&product[12].equalsIgnoreCase(product[13])&&product[12].equalsIgnoreCase(product[14])
+                          &&product[12].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[12] +"\nPRODUCT PRICE : "+ price[12] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[12] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[13])){
+        while(rept == true) {
+                      
+                  product[15] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");    
+                  if(product[15].equalsIgnoreCase(product[1])&&product[15].equalsIgnoreCase(product[2])&&product[15].equalsIgnoreCase(product[3])
+                          &&product[13].equalsIgnoreCase(product[4])&&product[13].equalsIgnoreCase(product[5])
+                          &&product[13].equalsIgnoreCase(product[6])&&product[13].equalsIgnoreCase(product[7])
+                          &&product[13].equalsIgnoreCase(product[8])&&product[13].equalsIgnoreCase(product[9])
+                          &&product[13].equalsIgnoreCase(product[10])&&product[13].equalsIgnoreCase(product[11])
+                          &&product[13].equalsIgnoreCase(product[12])&&product[13].equalsIgnoreCase(product[14])
+                          &&product[13].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[13] +"\nPRODUCT PRICE : "+ price[13] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[13] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[14])){
+         while(rept == true) {
+                      
+                  product[14] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                 
+                  if(product[14].equalsIgnoreCase(product[1])&&product[15].equalsIgnoreCase(product[2])&&product[15].equalsIgnoreCase(product[3])
+                          &&product[14].equalsIgnoreCase(product[4])&&product[14].equalsIgnoreCase(product[5])
+                          &&product[14].equalsIgnoreCase(product[6])&&product[14].equalsIgnoreCase(product[7])
+                          &&product[14].equalsIgnoreCase(product[8])&&product[14].equalsIgnoreCase(product[9])
+                          &&product[14].equalsIgnoreCase(product[10])&&product[14].equalsIgnoreCase(product[11])
+                          &&product[14].equalsIgnoreCase(product[12])&&product[14].equalsIgnoreCase(product[13])
+                          &&product[14].equalsIgnoreCase(product[15])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[14] +"\nPRODUCT PRICE : "+ price[1] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[14] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else if (transaction.equalsIgnoreCase(prodCODE[15])){
+       while(rept == true) {
+                      
+                  product[15] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT NAME ");
+                  price[15] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE ENTER PRODUCT PRICE"));
+                  
+                  if(product[15].equalsIgnoreCase(product[1])&&product[15].equalsIgnoreCase(product[2])&&product[15].equalsIgnoreCase(product[3])
+                          &&product[15].equalsIgnoreCase(product[4])&&product[15].equalsIgnoreCase(product[5])
+                          &&product[15].equalsIgnoreCase(product[6])&&product[15].equalsIgnoreCase(product[7])
+                          &&product[15].equalsIgnoreCase(product[8])&&product[15].equalsIgnoreCase(product[9])
+                          &&product[15].equalsIgnoreCase(product[10])&&product[15].equalsIgnoreCase(product[11])
+                          &&product[15].equalsIgnoreCase(product[12])&&product[15].equalsIgnoreCase(product[13])
+                          &&product[15].equalsIgnoreCase(product[14])){
+                  
+                  JOptionPane.showMessageDialog(null, "PRODUCT NAME : " +product[15] +"\nPRODUCT PRICE : "+ price[15] +"SUCCESFULLY ADDED");
+                  main = false; 
+                }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+             }        
+     }    
+        else if(price[1] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+        }
+     else{
+         JOptionPane.showMessageDialog(null,"INVALID INPUT");
+         main = true;
+     }
+    prcont();
+}
+private static void prcont(){
+    boolean here = true;
+    while(here == true){
+        int choice = Integer.parseInt(JOptionPane.showInputDialog("DO YOU WANT TO CHANGE ANOTHER PRODUCT'S NAME\n[1]YES\n[2]NO"));
+        if(choice == 1){
+            prNAME();
+            
+        }
+        else if(choice == 2){
+            adControl();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"INVALID INPUT");
+            here = true;
+        }
+    }
+
+} 
+
+    private static void prCHANGE() {
+         boolean main = true;
+    while(main == true){
+            
+      transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+                 +prodCODE[15] + "\t"  + product[15] + "\t"+ price[15] +"\n"      
+        ));
+    
+    if(transaction.equalsIgnoreCase(prodCODE[1])){
+        if(price[1] != 0){
+            price[1] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[1]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[1]+ "\nUPDATED PRODUCT PRICE : "+ price[1] );
+            main = false;
+        }
+        else if(price[1] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        }
+    }
+    else if (transaction.equalsIgnoreCase(prodCODE[2])){
+        if(price[2] != 0){
+            price[2] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[2]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[1]+ "\nUPDATED PRODUCT PRICE : "+ price[2] );
+            main = false;
+        }
+        else if(price[2] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[3])){
+        if(price[3] != 0){
+            price[3] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[3]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[1]+ "\nUPDATED PRODUCT PRICE : "+ price[3] );
+            main = false;
+        }
+        else if(price[3] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = false;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[4])){
+        if(price[4] != 0){
+            price[4] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[4]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[4]+ "\nUPDATED PRODUCT PRICE : "+ price[4] );
+            main = false;
+        }
+        else if(price[4] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[5])){
+        if(price[5] != 0){
+            price[5] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[5]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[5]+ "\nUPDATED PRODUCT PRICE : "+ price[5] );
+            main = false;
+        }
+        else if(price[5] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[6])){
+        if(price[6] != 0){
+            price[6] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[6]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[6]+ "\nUPDATED PRODUCT PRICE : "+ price[6] );
+            main = false;
+        }
+        else if(price[6] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[7])){
+        if(price[7] != 0){
+            price[7] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[7]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[7]+ "\nUPDATED PRODUCT PRICE : "+ price[7] );
+            main = false;
+        }
+        else if(price[7] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[8])){
+        if(price[8] != 0){
+            price[8] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[8]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[8]+ "\nUPDATED PRODUCT PRICE : "+ price[8] );
+            main = false;
+        }
+        else if(price[8] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[9])){
+        if(price[9] != 0){
+            price[9] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[9]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[1]+ "\nUPDATED PRODUCT PRICE : "+ price[9] );
+            main = false;
+        }
+        else if(price[9] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[10])){
+        if(price[10] != 0){
+            price[10] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[10]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[10]+ "\nUPDATED PRODUCT PRICE : "+ price[10] );
+            main = false;
+        }
+        else if(price[10] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[11])){
+        if(price[11] != 0){
+            price[11] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[11]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[1]+ "\nUPDATED PRODUCT PRICE : "+ price[11] );
+            main = false;
+        }
+        else if(price[11] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[12])){
+        if(price[12] != 0){
+            price[12] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[12]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[12]+ "\nUPDATED PRODUCT PRICE : "+ price[12] );
+            main = false;
+        }
+        else if(price[12] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[13])){
+        if(price[13] != 0){
+            price[13] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[13]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[13]+ "\nUPDATED PRODUCT PRICE : "+ price[13] );
+            main = false;
+        }
+        else if(price[13] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[14])){
+        if(price[14] != 0){
+            price[14] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[14]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[14]+ "\nUPDATED PRODUCT PRICE : "+ price[14] );
+            main = false;
+        }
+        else if(price[14] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else if (transaction.equalsIgnoreCase(prodCODE[15])){
+        if(price[15] != 0){
+            price[15] = Integer.parseInt(JOptionPane.showInputDialog("PLEASE INPUT NEW PRICE FOR PRODUCT  " +product[15]  ));
+            JOptionPane.showMessageDialog(null,"PRICE CHANGE IS SUCCSESFUL\nPRODUCT NAME : " +product[15]+ "\nUPDATED PRODUCT PRICE : "+ price[15] );
+            main = false;
+        }
+        else if(price[15] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            main = true;
+        } 
+    }
+     else{
+         JOptionPane.showMessageDialog(null,"INVALID INPUT");
+         main = true;
+     }
+    }
+    boolean here = true;
+    while(here == true){
+        int choice = Integer.parseInt(JOptionPane.showInputDialog("DO YOU WANT TO CHANGE ANOTHER PRODUCT'S NAME\n[1]YES\n[2]NO"));
+        if(choice == 1){
+            prNAME();
+            
+        }
+        else if(choice == 2){
+            adControl();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"INVALID INPUT");
+            here = true;
+        }
+    }
+        
+     }
+
+    private static void prCODE() {
+        boolean main = true,rept = true;
+        while(main == true){
+            
+        transaction  = JOptionPane.showInputDialog(null, new JTextArea("AVAIABLE ITEMS \nCODE \tPRODUCT NAME \tPRICE\n"
+                 +prodCODE[1] + "\t"  + product[1] + "\t"+ price[1] +"\n"
+                 +prodCODE[2] + "\t"  + product[2] + "\t"+ price[2] +"\n"
+                 +prodCODE[3] + "\t"  + product[3] + "\t"+ price[3] +"\n"
+                 +prodCODE[4] + "\t"  + product[4] + "\t"+ price[4] +"\n"
+                 +prodCODE[5] + "\t"  + product[5] + "\t"+ price[5] +"\n"
+                 +prodCODE[6] + "\t"  + product[6] + "\t"+ price[6] +"\n"
+                 +prodCODE[7] + "\t"  + product[7] + "\t"+ price[7] +"\n"
+                 +prodCODE[8] + "\t"  + product[8] + "\t"+ price[8] +"\n"
+                 +prodCODE[9] + "\t"  + product[9] + "\t"+ price[9] +"\n"
+                 +prodCODE[10] + "\t"  + product[10] + "\t"+ price[10] +"\n"
+                 +prodCODE[11] + "\t"  + product[11] + "\t"+ price[11] +"\n"
+                 +prodCODE[12] + "\t"  + product[12] + "\t"+ price[12] +"\n"
+                 +prodCODE[13] + "\t"  + product[13] + "\t"+ price[13] +"\n"
+                 +prodCODE[14] + "\t"  + product[14] + "\t"+ price[14] +"\n"
+                 +prodCODE[15] + "\t"  + product[15] + "\t"+ price[15] +"\n"      
+        ));
+    }
+            if(transaction.equalsIgnoreCase(prodCODE[1])){
+                if(price[1] !=0){
+                    while(rept == true) {
+                    prodCODE[1] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[1].equalsIgnoreCase(prodCODE[2])&&prodCODE[1].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[1].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[1].equalsIgnoreCase(prodCODE[4])&&prodCODE[1].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[1].equalsIgnoreCase(prodCODE[6])&&prodCODE[1].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[1].equalsIgnoreCase(prodCODE[8])&&prodCODE[1].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[1].equalsIgnoreCase(prodCODE[10])&&prodCODE[1].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[1].equalsIgnoreCase(prodCODE[12])&&prodCODE[1].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[1].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[1]+ "\nPRODUCT NAME : " +product[1] +"\nPRODUCT PRICE : "+ price[1] +"SUCCESFULLY ADDED");  
+                         prcont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                  }          
+             }
+            }
+        else if(price[1] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+       }  
+      
+     
+      else if(transaction.equalsIgnoreCase(prodCODE[2])){
+    while(rept == true) {
+                  prodCODE[2] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[2].equalsIgnoreCase(prodCODE[1])&&prodCODE[2].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[2].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[2].equalsIgnoreCase(prodCODE[4])&&prodCODE[2].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[2].equalsIgnoreCase(prodCODE[6])&&prodCODE[2].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[2].equalsIgnoreCase(prodCODE[8])&&prodCODE[2].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[2].equalsIgnoreCase(prodCODE[10])&&prodCODE[2].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[2].equalsIgnoreCase(prodCODE[12])&&prodCODE[2].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[2].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[1]+ "\nPRODUCT NAME : " +product[1] +"\nPRODUCT PRICE : "+ price[1] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[2] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+        
+   
+
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[2])){
+    while(rept == true) {
+                  prodCODE[2] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[3].equalsIgnoreCase(prodCODE[1])&&prodCODE[3].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[3].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[3].equalsIgnoreCase(prodCODE[4])&&prodCODE[3].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[3].equalsIgnoreCase(prodCODE[6])&&prodCODE[3].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[3].equalsIgnoreCase(prodCODE[8])&&prodCODE[3].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[3].equalsIgnoreCase(prodCODE[10])&&prodCODE[3].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[3].equalsIgnoreCase(prodCODE[12])&&prodCODE[3].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[3].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[3]+ "\nPRODUCT NAME : " +product[3] +"\nPRODUCT PRICE : "+ price[3] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[3] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[4])){
+    while(rept == true) {
+                  prodCODE[4] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[4].equalsIgnoreCase(prodCODE[1])&&prodCODE[4].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[4].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[4].equalsIgnoreCase(prodCODE[4])&&prodCODE[4].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[4].equalsIgnoreCase(prodCODE[6])&&prodCODE[4].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[4].equalsIgnoreCase(prodCODE[8])&&prodCODE[4].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[4].equalsIgnoreCase(prodCODE[10])&&prodCODE[4].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[4].equalsIgnoreCase(prodCODE[12])&&prodCODE[4].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[4].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[4]+ "\nPRODUCT NAME : " +product[4] +"\nPRODUCT PRICE : "+ price[4] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[4] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[5])){
+    while(rept == true) {
+                  prodCODE[5] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[5].equalsIgnoreCase(prodCODE[1])&&prodCODE[5].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[5].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[5].equalsIgnoreCase(prodCODE[4])&&prodCODE[5].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[5].equalsIgnoreCase(prodCODE[6])&&prodCODE[5].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[5].equalsIgnoreCase(prodCODE[8])&&prodCODE[5].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[5].equalsIgnoreCase(prodCODE[10])&&prodCODE[5].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[5].equalsIgnoreCase(prodCODE[12])&&prodCODE[5].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[5].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[5]+ "\nPRODUCT NAME : " +product[5] +"\nPRODUCT PRICE : "+ price[5] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[5] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[6])){
+    while(rept == true) {
+                  prodCODE[6] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[6].equalsIgnoreCase(prodCODE[1])&&prodCODE[6].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[6].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[6].equalsIgnoreCase(prodCODE[4])&&prodCODE[6].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[6].equalsIgnoreCase(prodCODE[2])&&prodCODE[6].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[6].equalsIgnoreCase(prodCODE[8])&&prodCODE[6].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[6].equalsIgnoreCase(prodCODE[10])&&prodCODE[6].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[6].equalsIgnoreCase(prodCODE[12])&&prodCODE[6].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[6].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[6]+ "\nPRODUCT NAME : " +product[6] +"\nPRODUCT PRICE : "+ price[6] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[6] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+
+      else if(transaction.equalsIgnoreCase(prodCODE[7])){
+    while(rept == true) {
+                  prodCODE[7] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[7].equalsIgnoreCase(prodCODE[1])&&prodCODE[7].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[7].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[7].equalsIgnoreCase(prodCODE[4])&&prodCODE[7].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[7].equalsIgnoreCase(prodCODE[6])&&prodCODE[7].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[7].equalsIgnoreCase(prodCODE[8])&&prodCODE[7].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[7].equalsIgnoreCase(prodCODE[10])&&prodCODE[7].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[7].equalsIgnoreCase(prodCODE[12])&&prodCODE[7].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[7].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[7]+ "\nPRODUCT NAME : " +product[7] +"\nPRODUCT PRICE : "+ price[7] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[7] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }    
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[8])){
+    while(rept == true) {
+                  prodCODE[8] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[8].equalsIgnoreCase(prodCODE[1])&&prodCODE[8].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[8].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[8].equalsIgnoreCase(prodCODE[4])&&prodCODE[2].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[8].equalsIgnoreCase(prodCODE[6])&&prodCODE[2].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[8].equalsIgnoreCase(prodCODE[2])&&prodCODE[2].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[8].equalsIgnoreCase(prodCODE[10])&&prodCODE[2].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[8].equalsIgnoreCase(prodCODE[12])&&prodCODE[2].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[8].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[8]+ "\nPRODUCT NAME : " +product[8] +"\nPRODUCT PRICE : "+ price[8] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[8] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[9])){
+    while(rept == true) {
+                  prodCODE[9] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[9].equalsIgnoreCase(prodCODE[1])&&prodCODE[9].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[9].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[9].equalsIgnoreCase(prodCODE[4])&&prodCODE[9].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[9].equalsIgnoreCase(prodCODE[6])&&prodCODE[9].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[9].equalsIgnoreCase(prodCODE[8])&&prodCODE[9].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[9].equalsIgnoreCase(prodCODE[10])&&prodCODE[9].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[9].equalsIgnoreCase(prodCODE[12])&&prodCODE[9].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[9].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[9]+ "\nPRODUCT NAME : " +product[9] +"\nPRODUCT PRICE : "+ price[9] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[9] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[10])){
+    while(rept == true) {
+                  prodCODE[10] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[10].equalsIgnoreCase(prodCODE[1])&&prodCODE[10].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[10].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[10].equalsIgnoreCase(prodCODE[4])&&prodCODE[10].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[10].equalsIgnoreCase(prodCODE[6])&&prodCODE[10].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[10].equalsIgnoreCase(prodCODE[8])&&prodCODE[10].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[10].equalsIgnoreCase(prodCODE[2])&&prodCODE[10].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[10].equalsIgnoreCase(prodCODE[12])&&prodCODE[10].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[10].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[10]+ "\nPRODUCT NAME : " +product[10] +"\nPRODUCT PRICE : "+ price[10] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[10] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[11])){
+    while(rept == true) {
+                  prodCODE[11] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[11].equalsIgnoreCase(prodCODE[1])&&prodCODE[11].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[11].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[11].equalsIgnoreCase(prodCODE[4])&&prodCODE[11].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[11].equalsIgnoreCase(prodCODE[6])&&prodCODE[11].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[11].equalsIgnoreCase(prodCODE[8])&&prodCODE[11].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[11].equalsIgnoreCase(prodCODE[10])&&prodCODE[11].equalsIgnoreCase(prodCODE[12])
+                          &&prodCODE[11].equalsIgnoreCase(prodCODE[13])&&prodCODE[11].equalsIgnoreCase(prodCODE[14])
+                          &&prodCODE[11].equalsIgnoreCase(prodCODE[15])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[11]+ "\nPRODUCT NAME : " +product[11] +"\nPRODUCT PRICE : "+ price[11] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[11] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[12])){
+    while(rept == true) {
+                  prodCODE[12] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[12].equalsIgnoreCase(prodCODE[1])&&prodCODE[10].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[12].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[12].equalsIgnoreCase(prodCODE[4])&&prodCODE[12].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[12].equalsIgnoreCase(prodCODE[6])&&prodCODE[12].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[12].equalsIgnoreCase(prodCODE[8])&&prodCODE[12].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[12].equalsIgnoreCase(prodCODE[10])&&prodCODE[12].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[12].equalsIgnoreCase(prodCODE[13])&&prodCODE[12].equalsIgnoreCase(prodCODE[14])
+                          &&prodCODE[12].equalsIgnoreCase(prodCODE[15])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[12]+ "\nPRODUCT NAME : " +product[12] +"\nPRODUCT PRICE : "+ price[12] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[12] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[13])){
+    while(rept == true) {
+                  prodCODE[13] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[13].equalsIgnoreCase(prodCODE[1])&&prodCODE[13].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[13].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[13].equalsIgnoreCase(prodCODE[4])&&prodCODE[13].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[13].equalsIgnoreCase(prodCODE[6])&&prodCODE[13].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[13].equalsIgnoreCase(prodCODE[8])&&prodCODE[13].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[13].equalsIgnoreCase(prodCODE[10])&&prodCODE[13].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[13].equalsIgnoreCase(prodCODE[12])&&prodCODE[13].equalsIgnoreCase(prodCODE[14])
+                          &&prodCODE[13].equalsIgnoreCase(prodCODE[15])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[13]+ "\nPRODUCT NAME : " +product[13] +"\nPRODUCT PRICE : "+ price[13] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[13] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+         prCODE();
+        }
+            
+      else if(transaction.equalsIgnoreCase(prodCODE[14])){
+    while(rept == true) {
+                  prodCODE[14] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[14].equalsIgnoreCase(prodCODE[1])&&prodCODE[14].equalsIgnoreCase(prodCODE[2])
+                          &&prodCODE[14].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[14].equalsIgnoreCase(prodCODE[4])&&prodCODE[14].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[14].equalsIgnoreCase(prodCODE[6])&&prodCODE[14].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[14].equalsIgnoreCase(prodCODE[8])&&prodCODE[14].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[14].equalsIgnoreCase(prodCODE[10])&&prodCODE[14].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[14].equalsIgnoreCase(prodCODE[12])&&prodCODE[14].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[14].equalsIgnoreCase(prodCODE[15])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[14]+ "\nPRODUCT NAME : " +product[14] +"\nPRODUCT PRICE : "+ price[14] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[14] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            prCODE();
+        }
+    
+      else if(transaction.equalsIgnoreCase(prodCODE[15])){
+    while(rept == true) {
+                  prodCODE[10] = JOptionPane.showInputDialog("PLEASE ENTER PRODUCT CODE ");
+                     
+                  if(prodCODE[15].equalsIgnoreCase(prodCODE[1])&&prodCODE[15].equalsIgnoreCase(prodCODE[3])
+                          &&prodCODE[15].equalsIgnoreCase(prodCODE[10])
+                          &&prodCODE[15].equalsIgnoreCase(prodCODE[4])&&prodCODE[15].equalsIgnoreCase(prodCODE[5])
+                          &&prodCODE[15].equalsIgnoreCase(prodCODE[6])&&prodCODE[15].equalsIgnoreCase(prodCODE[7])
+                          &&prodCODE[15].equalsIgnoreCase(prodCODE[8])&&prodCODE[15].equalsIgnoreCase(prodCODE[9])
+                          &&prodCODE[15].equalsIgnoreCase(prodCODE[2])&&prodCODE[15].equalsIgnoreCase(prodCODE[11])
+                          &&prodCODE[15].equalsIgnoreCase(prodCODE[12])&&prodCODE[15].equalsIgnoreCase(prodCODE[13])
+                          &&prodCODE[15].equalsIgnoreCase(prodCODE[14])){
+                        
+                  JOptionPane.showMessageDialog(null,"PRODUCT CODE :  "+ prodCODE[15]+ "\nPRODUCT NAME : " +product[15] +"\nPRODUCT PRICE : "+ price[15] +"SUCCESFULLY ADDED");  
+                         codecont();
+                    }
+                        else {
+                            JOptionPane.showMessageDialog(null,"PRODUCT NAME IS UNAVAILBE");
+                                    rept = true;
+                        }
+                  }             
+     }
+        
+        else if(price[15] == 0){
+            JOptionPane.showMessageDialog(null, "PRODUCT SLOT IS EMPTY");
+            prCODE();
+        }
+        else{
+                   JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                   prCODE();
+        }
+    }
+
+    
+private static void codecont(){
+    boolean here = true;
+    while(here == true){
+        int choice = Integer.parseInt(JOptionPane.showInputDialog("DO YOU WANT TO CHANGE ANOTHER PRODUCT'S NAME\n[1]YES\n[2]NO"));
+        if(choice == 1){
+            prCODE();
+            
+        }
+        else if(choice == 2){
+            adControl();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"INVALID INPUT");
+            here = true;
+        }
+    }
+
+} 
+
+    
+    
+    
+  
+    
+}
